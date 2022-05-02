@@ -1,1 +1,1 @@
-export { Login as LoginPage } from "./Login"
+export { LoginPage } from "./Login.page"

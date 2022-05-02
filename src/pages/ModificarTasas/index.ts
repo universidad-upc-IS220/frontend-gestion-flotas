@@ -1,1 +1,1 @@
-export { ModificarTasas as ModificarTasasPage} from './ModificarTasas';
+export { ModificarTasaPage } from './ModificarTasa.page';

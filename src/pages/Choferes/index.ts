@@ -1,1 +1,1 @@
-export { Choferes as ChoferesPage } from './Choferes';
+export { ChoferesPage } from './Choferes.page';

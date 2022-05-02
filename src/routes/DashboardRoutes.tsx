@@ -1,17 +1,18 @@
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HomePage } from '../pages/Home/index';
-import { ChoferesPage } from '../pages/Choferes/index';
-import { PapeletaPage } from '../pages/Papeleta/index';
-// import { VisualizarTasasPage } from '../pages/VisualizarTasas';
-// import { ModificarTasasPage } from '../pages/ModificarTasas';
+import { ModificarTasaPage } from '../pages/ModificarTasas';
+import { ChoferesPage } from '../pages/Choferes';
+import { UnidadesPage } from '../pages/Unidades';
+
+// Providers
+import { ModificarTasaProvider } from '../pages/ModificarTasas/contexts/ModificarTasaProvider';
 
 export const DashboardRoutes = () => {
   return (
     <Routes>
-      <Route path="/dashboard" element={<HomePage />} />
+      <Route path="/dashboard" element={<UnidadesPage />} />
       <Route path="/choferes" element={<ChoferesPage />} />
-      <Route path="/papeleta" element={<PapeletaPage />} />
-      {/* <Route path="/modificar-tasas" element={<ModificarTasasPage />} /> */}
     </Routes>
   );
 };

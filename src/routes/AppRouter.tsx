@@ -7,7 +7,7 @@ const AppRouter = () => {
   return (
     <HashRouter>
       <Routes>
-        <Route index element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route
           path="/*"
           element={

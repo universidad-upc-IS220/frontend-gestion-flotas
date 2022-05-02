@@ -32,11 +32,11 @@ const LinkSidebar = ({ item }: LinkProps) => {
         sx={{
           '.nav-link.active & ': {
             borderLeft: 'solid 3px teal',
-            backgroundColor: 'teal.50',
+            backgroundColor: 'rgba(243, 115, 32, 0.08)',
             color: 'teal.600',
             fontWeight: '600',
             '& svg': {
-              fill: 'teal.600'
+              fill: 'teal'
             }
           }
         }}
@@ -44,11 +44,11 @@ const LinkSidebar = ({ item }: LinkProps) => {
           bg: 'white',
           color: 'teal.600',
           '& svg': {
-            fill: 'teal.600'
+            fill: 'teal'
           }
         }}
       >
-        <item.icon fill="teal.600" />
+        <item.icon fill="#1A202C" />
         <Text ml="10px">{item.text}</Text>
       </Box>
     </NavLink>

@@ -1,4 +1,4 @@
-import { types } from '../../types';
+import { types } from '../../models';
 import { API_BASE_URL } from '../../constants/global';
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -24,15 +24,21 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { getToken, saveToken } from '../../utils/tokens';
 
-import { useAuth } from '../../hooks';
-import { AuthContext } from '../../auth/authContext';
+import { UserContext } from '../../contexts/userContext';
+import { parseJwt } from '../../utils/parseJwt';
+
+// Models
+import { UserStateProps } from '../../models';
 
 interface IFormInput {
   user: string;
   password: string;
 }
 
-export const Login = () => {
+export const LoginPage = () => {
+  // User context
+  const { userLogin } = useContext(UserContext);
+
   const navigate = useNavigate();
   const {
     register,
@@ -41,9 +47,7 @@ export const Login = () => {
   } = useForm<IFormInput>({
     mode: 'onChange'
   });
-  const { dispatch } = useContext(AuthContext);
 
-  const [token, setToken] = useAuth();
   const [saveSession, setSaveSession] = useState(true);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -58,11 +62,11 @@ export const Login = () => {
   const onSubmit = async ({ user, password }: IFormInput) => {
     try {
       var raw = JSON.stringify({
-        username: user,
+        identifier: user,
         password: password
       });
 
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/local`, {
         mode: 'cors',
         method: 'post',
         headers: {
@@ -72,25 +76,26 @@ export const Login = () => {
         redirect: 'follow'
       });
       const data = await response.json();
+      console.log('login data', data);
 
       // SUCCESS
-      console.log('->', response.status, data);
-
-      if (response.status === 201 && data.jwt !== '' && data.roles !== '') {
+      if (response.status === 200 && data.jwt !== '') {
         console.log('save user data', data);
-        const action = {
-          type: types.login,
-          payload: { name: data.name }
-        };
-        dispatch(action);
-
-        setToken(data);
 
         // Guardar token
         if (saveSession) {
-          console.log('saveSession >', data);
+          console.log('save token in cookie');
           saveToken(data.jwt);
         }
+
+        const userStateData: UserStateProps = {
+          userId: parseJwt(data.jwt).sub,
+          userName: data.user.username,
+          //TODO: create roles in strapi
+          userRoles: 'admin',
+          logged: true
+        };
+        userLogin(userStateData);
 
         navigate('/dashboard');
       }
@@ -224,7 +229,7 @@ export const Login = () => {
             </Checkbox>
 
             <Button
-              bg="#28cc9e"
+              bg="teal"
               color="white"
               fontWeight={500}
               fontSize="1rem"

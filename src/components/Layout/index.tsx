@@ -12,6 +12,8 @@ type Props = {
 };
 
 export const DashboardLayout = ({ children, title, fullWidth = false, backToPage = '' }: Props) => {
+  // console.log('PERFORMANCE DashboardLayout');
+
   const navigate = useNavigate();
 
   const size = fullWidth ? '100%' : 'calc(100% - 192px)';
@@ -27,7 +29,7 @@ export const DashboardLayout = ({ children, title, fullWidth = false, backToPage
             </Box>
           )}
           <Box w={['100%', '100%', size]} bg="#F5F5F5" minH="calc(100vh - 72px)">
-            <Container maxW="100%" padding="32px 68px" marginX={0}>
+            <Container maxW="100%" padding="32px 32px" marginX={0}>
               <Heading
                 fontSize={'24px'}
                 fontWeight="400"

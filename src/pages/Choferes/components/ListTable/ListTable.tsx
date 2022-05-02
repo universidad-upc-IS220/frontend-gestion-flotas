@@ -23,13 +23,12 @@ import {
 } from '@chakra-ui/react';
 import { Paginator, Container, Previous, usePaginator, Next, PageGroup } from 'chakra-paginator';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { BsArrowUp, BsArrowDown } from 'react-icons/bs';
 import TrElement from './components/TrElement';
 import ThElement from './components/ThElement';
 
-import { UnidadProps, ChoferProps } from '../../../../types';
+import { ChoferProps } from '../../../../models';
 
-function TablaChoferes({ data }: { data: ChoferProps[] }) {
+export const ListTable = ({ data }: { data: ChoferProps[] }) => {
   const itemsPerPage = 10;
   const outerLimit = 2;
   const innerLimit = 2;
@@ -110,31 +109,31 @@ function TablaChoferes({ data }: { data: ChoferProps[] }) {
           ))}
         </Tbody>
       </Table>
-      <Box>
-        <Paginator
-          isDisabled={isDisabled}
-          activeStyles={activeStyles}
-          innerLimit={innerLimit}
-          currentPage={currentPage}
-          outerLimit={outerLimit}
-          normalStyles={normalStyles}
-          separatorStyles={separatorStyles}
-          pagesQuantity={pagesQuantity}
-          onPageChange={handlePageChange}
-        >
-          <Container align="center" justify="center" w="full" p={4}>
-            <Previous>
-              <Icon as={IoIosArrowBack} />
-            </Previous>
-            <PageGroup isInline align="center" />
-            <Next>
-              <Icon as={IoIosArrowForward} />
-            </Next>
-          </Container>
-        </Paginator>
-      </Box>
+      {data.length > itemsPerPage && (
+        <Box>
+          <Paginator
+            isDisabled={isDisabled}
+            activeStyles={activeStyles}
+            innerLimit={innerLimit}
+            currentPage={currentPage}
+            outerLimit={outerLimit}
+            normalStyles={normalStyles}
+            separatorStyles={separatorStyles}
+            pagesQuantity={pagesQuantity}
+            onPageChange={handlePageChange}
+          >
+            <Container align="center" justify="center" w="full" p={4}>
+              <Previous>
+                <Icon as={IoIosArrowBack} />
+              </Previous>
+              <PageGroup isInline align="center" />
+              <Next>
+                <Icon as={IoIosArrowForward} />
+              </Next>
+            </Container>
+          </Paginator>
+        </Box>
+      )}
     </Box>
   );
-}
-
-export default TablaChoferes;
+};

@@ -1,18 +1,20 @@
+import { useContext } from 'react';
 import { ItemProps } from './types';
 
-import { Box, Circle, Flex, Icon, Text } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Circle, Flex, Text, Icon } from '@chakra-ui/react';
 
-import { useAuth } from '../../hooks';
+// Utils
 import { capitalize } from '../../utils/textTransform';
 
 // Assets
 import { ReactComponent as TASAS_ICON } from '../../assets/icon_dashboard_tasas.svg';
 import { ReactComponent as HOME_ICON } from '../../assets/icon_dashboard_home.svg';
-import { HiDocumentText } from 'react-icons/hi';
-import { RiUser6Line } from 'react-icons/ri';
-import { AiFillCar } from 'react-icons/ai';
-import { useContext } from 'react';
-import { AuthContext } from '../../auth/authContext';
+import { AiOutlineHome } from 'react-icons/ai';
+import { FiUsers } from 'react-icons/fi';
+
+// Contexts
+import { UserContext } from '../../contexts/userContext';
 
 // Components
 import LinkSidebar from './components/LinkSiderbar';
@@ -23,35 +25,25 @@ const RoutesList: ItemProps[] = [
     text: 'Unidades',
     active: window.location.hash === '#/dashboard',
     url: '/dashboard',
-    // icon: ({ fill }) => <HOME_ICON fill={fill} />
-    icon: ({ fill }) => <Icon as={AiFillCar} w="24px" h="24px" />
+    icon: ({ fill }) => <Icon as={AiOutlineHome} />
   },
   {
     id: 2,
     text: 'Choferes',
     active: window.location.hash === '#/choferes',
     url: '/choferes',
-    icon: ({ fill }) => <Icon as={RiUser6Line} w="24px" h="24px" />
-  },
-  {
-    id: 3,
-    text: 'Papeleta',
-    active: window.location.hash === '#/papeleta',
-    url: '/papeleta',
-    icon: ({ fill }) => <Icon as={HiDocumentText} w="24px" h="24px" />
+    icon: ({ fill }) => <Icon as={FiUsers} />
   }
 ];
 
 export default function Sidebar() {
-  const [token] = useAuth();
-  const { user } = useContext(AuthContext);
-
-  let userName = user.name ? capitalize(user.name.split(' ')[0]) : 'Anónimo';
+  const { userData } = useContext(UserContext);
+  const userName = userData.userName ? capitalize(userData.userName.split(' ')[0]) : 'Anónimo';
 
   return (
     <Box h="calc(100vh - 60px)" pt="20px" position="sticky" top="60px">
       <Flex alignItems="center" mb="23px" pl="1rem">
-        <Circle size="40px" bg="#28cc9e" color="white" marginRight="10px">
+        <Circle size="40px" bg="teal" color="white" marginRight="10px">
           {userName.slice(0, 1)}
         </Circle>
         <Text color="gray.900" fontWeight="600" fontSize="14px">
