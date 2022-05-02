@@ -1,4 +1,5 @@
 import {
+  useToast,
   Button,
   Drawer,
   DrawerCloseButton,
@@ -28,7 +29,7 @@ import { Skeleton } from '../../../../components/Skeleton/Skeleton';
 import { ChoferProps } from '../../../../models';
 import { BiHappy } from 'react-icons/bi';
 import { API_BASE_URL } from '../../../../constants/global';
-import { useNavigate } from 'react-router-dom';
+
 type Props = {
   choferDetails: ChoferProps;
   firstField: any;
@@ -42,6 +43,15 @@ export const DrawerDetailComponent: React.FC<Props> = ({
   isOpen,
   onClose
 }) => {
+  const toast = useToast({
+    position: 'bottom-right',
+    duration: 1500,
+    isClosable: true,
+    containerStyle: {
+      marginBottom: '90px'
+    }
+  });
+
   const {
     control,
     register,
@@ -50,7 +60,6 @@ export const DrawerDetailComponent: React.FC<Props> = ({
   } = useForm<any>({
     mode: 'onChange'
   });
-  let navigate = useNavigate();
   const [updateLoading, setUpdateLoading] = useState(false);
   const [canDisableUser, setCanDisableUser] = useState<boolean>(false);
   const [papeletaLoading, setPapeletaLoading] = useState(false);
@@ -63,19 +72,21 @@ export const DrawerDetailComponent: React.FC<Props> = ({
     const { estado } = data;
 
     if (estado === undefined) delete data['estado'];
-    const requestBody = {
-      data: { ...data }
-    };
-    console.log('data', requestBody);
-
     try {
       const res = await doFetch(`${API_BASE_URL}/api/choferes/${data.id}`, {
         method: 'PUT',
-        body: requestBody
+        body: { data: { ...data } }
       });
-      console.log('response', res);
+      console.log('response =>', res);
+
       if (res.data) {
-        window.location.reload();
+        toast({
+          title: '¡Éxito!',
+          description: 'Se realizaron los cambios correctamente.',
+          status: 'success'
+        });
+
+        // window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -178,15 +189,15 @@ export const DrawerDetailComponent: React.FC<Props> = ({
               </Box>
 
               <Box display="flex">
-                <FormLabel minWidth={'155'} htmlFor="nro_telefono">
+                <FormLabel minWidth={'155'} htmlFor="telefono">
                   N° Teléfono
                 </FormLabel>
                 <Input
                   size="sm"
-                  id="nro_telefono"
+                  id="telefono"
                   defaultValue={choferDetails.telefono}
                   type="tel"
-                  {...register('nro_telefono', { minLength: 9, maxLength: 12 })}
+                  {...register('telefono', { minLength: 9, maxLength: 12 })}
                 />
               </Box>
 

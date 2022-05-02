@@ -47,6 +47,7 @@ export const useFetch: fetchFuctions = (url, options) => {
       console.log("json", json)
       if (!signal.aborted) {
         setResponse(json);
+        console.log("return", json)
         return json;
       }
     } catch (e) {
