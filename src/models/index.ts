@@ -54,7 +54,7 @@ export interface ChoferProps {
   email:              string;
   direccion:          string;
   nro_licencia:       string;
-  estado:             string;
+  estado:             boolean;
   id:                 string;
 }
 

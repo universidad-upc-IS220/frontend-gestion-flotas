@@ -6,7 +6,6 @@ type Props = {
   data: PapeletaProps[];
 };
 export const PapeletasTableComponent: React.FC<Props> = ({ data }) => {
-  console.log('data', data);
   return (
     <TableContainer>
       <Table size="sm">
@@ -31,7 +30,7 @@ export const PapeletasTableComponent: React.FC<Props> = ({ data }) => {
               Retención
             </Th>
             <Th fontSize="11px" py="10px" px="7px">
-              Tel. Entidad
+              T. Entidad
             </Th>
           </Tr>
         </Thead>

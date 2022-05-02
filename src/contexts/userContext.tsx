@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { UserStateProps } from '../models';
-import { eraseCookie, getCookie } from '../utils/cookies';
+import { eraseCookie } from '../utils/cookies';
 
 // Higher order component: contains others components
 export const UserContext = createContext({} as any);

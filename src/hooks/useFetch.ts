@@ -27,18 +27,24 @@ export const useFetch: fetchFuctions = (url, options) => {
       // const token = getCookie("token") || null;
       // if(!token) throw 'token no encontrado';
 
-      const bodyOpts = options?.method === 'POST' ? {
+      const bodyOpts = options?.method === 'POST' || options?.method === 'PUT' ? {
         body: JSON.stringify(options?.body)
       } : {}
+      console.log("bodyOpts", bodyOpts);
+
 
       const res = await fetch(url, {
         method: options?.method || 'GET',
         headers: {
+          "Content-Type": "application/json",
+          "Accept": "*/*"
+          // "Accept": "text/plain"
           // 'Authorization': `Bearer ${token}`,
         },
         ...bodyOpts
       })
       const json = await res.json();
+      console.log("json", json)
       if (!signal.aborted) {
         setResponse(json);
         return json;
