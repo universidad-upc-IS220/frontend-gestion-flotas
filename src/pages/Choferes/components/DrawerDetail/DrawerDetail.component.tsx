@@ -86,7 +86,9 @@ export const DrawerDetailComponent: React.FC<Props> = ({
           status: 'success'
         });
 
-        // window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     } catch (error) {
       console.log(error);

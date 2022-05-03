@@ -32,13 +32,14 @@ export const ListTable = ({ data }: { data: UnidadProps[] }) => {
     marginX: '4px',
     fontSize: 'sm',
     bg: 'transparent',
-    border: '1px solid orange',
+    border: '1px solid teal',
     variant: 'unstyled',
     color: 'gray.900',
     textAlign: 'center',
     lineHeight: '32px',
     _hover: {
-      bg: 'orange.300'
+      color: 'white',
+      bg: 'teal.600'
     }
   };
 
@@ -46,13 +47,13 @@ export const ListTable = ({ data }: { data: UnidadProps[] }) => {
     h: '32px',
     w: '32px',
     marginX: '4px',
-    bg: '#28cc9e',
+    bg: 'teal.600',
     fontSize: 'sm',
     color: 'white',
     textAlign: 'center',
     lineHeight: '32px',
     _hover: {
-      bg: 'orange.300'
+      bg: 'teal.600'
     }
   };
 
@@ -87,29 +88,31 @@ export const ListTable = ({ data }: { data: UnidadProps[] }) => {
           ))}
         </Tbody>
       </Table>
-      <Box>
-        <Paginator
-          isDisabled={isDisabled}
-          activeStyles={activeStyles}
-          innerLimit={innerLimit}
-          currentPage={currentPage}
-          outerLimit={outerLimit}
-          normalStyles={normalStyles}
-          separatorStyles={separatorStyles}
-          pagesQuantity={pagesQuantity}
-          onPageChange={handlePageChange}
-        >
-          <Container align="center" justify="center" w="full" p={4}>
-            <Previous>
-              <Icon as={IoIosArrowBack} />
-            </Previous>
-            <PageGroup isInline align="center" />
-            <Next>
-              <Icon as={IoIosArrowForward} />
-            </Next>
-          </Container>
-        </Paginator>
-      </Box>
+      {data.length > itemsPerPage && (
+        <Box>
+          <Paginator
+            isDisabled={isDisabled}
+            activeStyles={activeStyles}
+            innerLimit={innerLimit}
+            currentPage={currentPage}
+            outerLimit={outerLimit}
+            normalStyles={normalStyles}
+            separatorStyles={separatorStyles}
+            pagesQuantity={pagesQuantity}
+            onPageChange={handlePageChange}
+          >
+            <Container align="center" justify="center" w="full" p={4}>
+              <Previous>
+                <Icon as={IoIosArrowBack} />
+              </Previous>
+              <PageGroup isInline align="center" />
+              <Next>
+                <Icon as={IoIosArrowForward} />
+              </Next>
+            </Container>
+          </Paginator>
+        </Box>
+      )}
     </Box>
   );
 };

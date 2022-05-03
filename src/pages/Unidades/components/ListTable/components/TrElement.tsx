@@ -7,14 +7,20 @@ import {
   MenuList,
   Td,
   Text,
-  Tr
+  Tr,
+  useDisclosure
 } from '@chakra-ui/react';
+import { useRef } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCheckboxCircleLine } from 'react-icons/ri';
 import { VscError } from 'react-icons/vsc';
 import { UnidadProps } from '../../../../../models';
+import { DrawerDetail } from '../../DrawerDetail';
 
 const TrElement = ({ item }: { item: UnidadProps }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const firstField: any = useRef();
+
   /* const formatDate = (date: string) => {
     const dateFormatted = new Date(date);
     return dateFormatted.toLocaleDateString('es-ES', {
@@ -61,6 +67,16 @@ const TrElement = ({ item }: { item: UnidadProps }) => {
           size="md"
           fontSize="22px"
           icon={<IoIosArrowForward />}
+          onClick={() => {
+            onOpen();
+          }}
+        />
+
+        <DrawerDetail
+          choferDetails={item}
+          isOpen={isOpen}
+          onClose={onClose}
+          firstField={firstField}
         />
       </Td>
     </Tr>

@@ -9,25 +9,13 @@ import { Skeleton } from '../../components/Skeleton';
 
 export const UnidadesPage = () => {
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
-    ENVIADO: true,
-    RECHAZADO: true,
-    APROBADO: true,
-    BORRADOR: false,
-    DESESTIMADO: false
-  });
-
   const [data, setData] = useState([]);
-  const [activeTab, setActiveTab] = useState('enviados');
+  const [estado, setEstado] = useState(true);
+
+  const filteredData = data.filter((item: any) => item.estado === estado);
 
   useEffect(() => {
     async function getData() {
-      const states = Object.keys(filters).map((item: string) => {
-        // @ts-ignore
-        if (filters[item]) {
-          return item;
-        }
-      });
       setLoading(true);
 
       const request = await fetch(`${API_BASE_URL}/api/unidades`);
@@ -38,15 +26,12 @@ export const UnidadesPage = () => {
           ..._item.attributes
         };
       });
-      console.log('response', response);
-      console.log('formatted data', formattedData);
-
       setData(formattedData);
       setLoading(false);
     }
 
     getData();
-  }, [activeTab, filters]);
+  }, []);
 
   return (
     <DashboardLayout title={'Choferes'}>
@@ -62,16 +47,7 @@ export const UnidadesPage = () => {
                 borderBottom: '4px solid #28cc9e'
               }}
               _focus={{ boxShadow: 'none' }}
-              onClick={() => {
-                setActiveTab('all');
-                setFilters({
-                  ENVIADO: true,
-                  RECHAZADO: true,
-                  APROBADO: true,
-                  BORRADOR: false,
-                  DESESTIMADO: false
-                });
-              }}
+              onClick={() => setEstado(true)}
             >
               Habilitados
             </Tab>
@@ -84,23 +60,14 @@ export const UnidadesPage = () => {
                 borderBottom: '4px solid #28cc9e'
               }}
               _focus={{ boxShadow: 'none' }}
-              onClick={() => {
-                setActiveTab('pendientes');
-                setFilters({
-                  ENVIADO: false,
-                  RECHAZADO: false,
-                  APROBADO: false,
-                  BORRADOR: true,
-                  DESESTIMADO: false
-                });
-              }}
+              onClick={() => setEstado(false)}
             >
               Inhabilitados
             </Tab>
           </TabList>
         </Tabs>
         {loading && <Skeleton />}
-        {!loading && data.length > 0 && <ListTable data={data} />}
+        {!loading && data.length > 0 && <ListTable data={filteredData} />}
       </Box>
     </DashboardLayout>
   );
