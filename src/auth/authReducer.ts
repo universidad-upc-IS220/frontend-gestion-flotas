@@ -1,4 +1,4 @@
-import { types } from "../types";
+import { types } from "../models";
 
 type ActionType = {
   type: string,

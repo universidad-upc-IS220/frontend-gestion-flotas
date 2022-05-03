@@ -1,73 +1,32 @@
 import { Box, Table, Thead, Tr, Tbody, Td } from '@chakra-ui/react';
 import ThElement from './components/ThElement';
 import { InputElement } from './components/InputElement';
-import { SegmentoProps } from '../../types';
+import { SegmentoProps } from '../../models';
+import { ModificarTasaContext } from '../../pages/ModificarTasas/contexts/ModificarTasaContext';
+import { useContext } from 'react';
+import { createLiveObjectData } from './utils';
 
 interface ComponentProps {
   tasa: SegmentoProps;
-  handleChanges: Function;
 }
 
-const dataToSave: { estado: string; segmentos: SegmentoProps[] } = {
-  estado: 'BORRADOR',
-  segmentos: []
-};
+export const BAUEditingTable: React.FC<ComponentProps> = ({ tasa }) => {
+  console.log('PERFORMANCE re-render BAUEditingTable >', tasa);
 
-export const BAUEditingTable: React.FC<ComponentProps> = ({ tasa, handleChanges }) => {
-  const validateInputChanges = ({
-    changedFlag,
-    segmento
-  }: {
-    changedFlag: boolean;
-    segmento: SegmentoProps;
-  }) => {
-    // Search by segment
-    const segmentoData = dataToSave.segmentos.find(
-      (segmentoObject) => segmentoObject.segmentoId === segmento.segmentoId
-    ) || {
-      segmentoId: segmento.segmentoId,
-      segmentoNombre: segmento.segmentoNombre,
-      plazos: []
-    };
-    console.log('segmentoData ->', segmentoData);
+  const { updateAreChanges } = useContext(ModificarTasaContext);
 
-    // Search by plazo
-    const plazosData = segmentoData?.plazos.find(
-      (plazoObject) => plazoObject.nombre === segmento.plazos[0].nombre
-    ) || {
-      id: segmento.plazos[0].id,
-      nombre: segmento.plazos[0].nombre,
-      gruposRiesgo: []
-    };
-    console.log('plazosData', plazosData);
+  const validateInputChanges = (itsChanged: Boolean, segmento: SegmentoProps) => {
+    console.log('call validateInputChanges', segmento);
 
-    // Remove coincidence in grupos de riesgos list
-    const grupoRiesgoData = plazosData?.gruposRiesgo.filter(
-      (_grupo) => _grupo.id !== segmento.plazos[0].gruposRiesgo[0].id
-    );
-    if (changedFlag) grupoRiesgoData?.push(segmento.plazos[0].gruposRiesgo[0]);
-    plazosData.gruposRiesgo = grupoRiesgoData;
+    const liveObjectData = createLiveObjectData(itsChanged, segmento);
+    console.log('Guardar en session Storage jeje', liveObjectData);
 
-    // Remove coincidence in plazos list
-    const plazosFiltered = segmentoData.plazos.filter(
-      (_plazo) => _plazo.id !== segmento.plazos[0].id
-    );
-    // Insert new plazos
-    if (plazosData.gruposRiesgo.length) plazosFiltered.push(plazosData);
+    // Llave para saber si existen nuevos valores en live data
+    const existChanges = !!liveObjectData.segmentos.length;
 
-    segmentoData.plazos = plazosFiltered;
-
-    // Remove coincidence in segmentos list
-    const segmentosFiltered = dataToSave.segmentos.filter(
-      (_segmento) => _segmento.segmentoId !== segmento.segmentoId
-    );
-    if (segmentoData.plazos.length) segmentosFiltered.push(segmentoData);
-    dataToSave.segmentos = segmentosFiltered;
-    console.log('dataToSave', dataToSave);
-
-    // Enable the change button
-    const existChanges = !!dataToSave.segmentos.length;
-    handleChanges(existChanges);
+    // Guarda los cambios realizados por el usuario en session storage
+    sessionStorage.setItem('liveData', JSON.stringify(liveObjectData));
+    updateAreChanges(existChanges);
   };
 
   return (
@@ -76,9 +35,9 @@ export const BAUEditingTable: React.FC<ComponentProps> = ({ tasa, handleChanges 
         <Thead>
           {tasa.plazos.length > 0 && (
             <Tr bg="#F2F1F1">
-              <ThElement key="grupo.main" text={'Plazos'} />
+              <ThElement key={`live-th-static`} text={'Plazos'} />
               {tasa.plazos[0].gruposRiesgo.map((grupo: any, index: number) => (
-                <ThElement key={grupo.nombre} text={grupo.nombre} />
+                <ThElement key={`live-th-${grupo.nombre}`} text={grupo.nombre} />
               ))}
             </Tr>
           )}
@@ -86,21 +45,31 @@ export const BAUEditingTable: React.FC<ComponentProps> = ({ tasa, handleChanges 
         <Tbody>
           {tasa.plazos.length > 0 &&
             tasa.plazos.map((plazo) => (
-              <Tr key={plazo.nombre}>
-                <Td width="93px" padding={'7px 20px 10px 20px'} key={plazo.nombre}>
+              <Tr key={`live-tr-${plazo.nombre}`}>
+                <Td width="93px" padding={'7px 20px 10px 20px'} key={`live-td-${plazo.nombre}`}>
                   {plazo.nombre}
                 </Td>
                 {plazo.gruposRiesgo.map((grupo: any, index: number) => {
+                  const modified = grupo.modified || false;
                   return (
-                    <Td width="74px" height="64px" padding={'7px 4px 10px 4px'} key={grupo.nombre}>
+                    <Td
+                      width="74px"
+                      height="64px"
+                      padding={'7px 4px 10px 4px'}
+                      key={`live-td-${grupo.nombre}`}
+                    >
                       <InputElement
                         idSegmento={tasa.segmentoId}
                         nombreSegmento={tasa.segmentoNombre}
+                        solicitudDetalleId={tasa.solicitudDetalleId}
                         idPlazo={plazo.id}
                         nombrePlazo={plazo.nombre}
                         idGrupoRiesgo={grupo.id}
                         nombreGrupoRiesgo={grupo.nombre}
                         tasaGrupoRiesgo={grupo.tasa}
+                        targetGrupoRiesgo={grupo.target}
+                        tasaDetalleId={grupo.tasaDetalleId}
+                        modified={modified}
                         handleChanges={validateInputChanges}
                       />
                     </Td>

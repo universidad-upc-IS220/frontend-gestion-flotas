@@ -10,8 +10,8 @@ export const NavigationTabs: React.FC<Props> = () => {
           minW={'160px'}
           _selected={{
             fontWeight: '600',
-            color: '#28cc9e',
-            borderBottom: '4px solid #28cc9e'
+            color: 'teal',
+            borderBottom: '4px solid teal'
           }}
           _focus={{ boxShadow: 'none' }}
           onClick={() => {}}

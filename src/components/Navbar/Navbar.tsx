@@ -2,20 +2,23 @@ import LOGO from '../../assets/logo_gestion_flotas.png';
 import LOGOUT_ICON from '../../assets/icon_power.svg';
 import BELL_ICON from '../../assets/icon_bell.svg';
 import { Box, Image } from '@chakra-ui/react';
-import { removeToken } from '../../utils/tokens';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../auth/authContext';
 import { useContext } from 'react';
-import { types } from '../../types';
+import { types } from '../../models';
+
+import { UserContext } from '../../contexts/userContext';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { userLogout } = useContext(UserContext);
   const { dispatch } = useContext(AuthContext);
 
   const logOut = () => {
-    dispatch({ type: types.logout });
-    removeToken();
+    userLogout();
     navigate('/');
+    // dispatch({ type: types.logout });
+    // removeToken();
   };
 
   return (
@@ -32,7 +35,13 @@ export default function Navbar() {
       px="20px"
     >
       <Box h="100%" d="flex" alignItems="center">
-        <Image src={LOGO} alt="logo" h="auto" width="120px" />
+        <Image
+          src={LOGO}
+          alt="logo"
+          h="36px"
+          cursor="pointer"
+          onClick={() => navigate('/dashboard')}
+        />
       </Box>
       <Box d="flex" h="100%" alignItems="center">
         <Image src={BELL_ICON} alt="" w="30px" h="30px" mr="20px" />

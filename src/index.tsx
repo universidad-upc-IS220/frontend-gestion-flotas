@@ -5,6 +5,12 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 
+if (process.env.NODE_ENV !== 'development') {
+  console.log = () => {};
+  console.warn = () => {};
+  console.error = () => {};
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

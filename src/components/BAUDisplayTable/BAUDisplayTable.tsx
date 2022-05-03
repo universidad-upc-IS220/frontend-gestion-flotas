@@ -1,7 +1,7 @@
 import { Decimal } from 'decimal.js';
 import { Box, Table, Thead, Tr, Tbody, Td, VStack, Tag, Text } from '@chakra-ui/react';
 import { ThElement } from './components/ThElement';
-import { SegmentoProps } from '../../types';
+import { SegmentoProps } from '../../models';
 
 type ComponentProps = {
   tasa: SegmentoProps;
@@ -16,7 +16,10 @@ export const BAUDisplayTable: React.FC<ComponentProps> = ({ tasa }) => {
             <Tr bg="#F2F1F1">
               <ThElement key="grupo.main" text={'Plazos'} />
               {tasa.plazos[0].gruposRiesgo.map((grupo: any, index: number) => (
-                <ThElement key={grupo.nombre} text={grupo.nombre} />
+                <ThElement
+                  key={`${Math.floor(Math.random() * 100)}-${grupo.nombre}`}
+                  text={grupo.nombre}
+                />
               ))}
             </Tr>
           )}
@@ -24,7 +27,7 @@ export const BAUDisplayTable: React.FC<ComponentProps> = ({ tasa }) => {
         <Tbody>
           {tasa.plazos.length > 0 &&
             tasa.plazos.map((item) => (
-              <Tr key={item.nombre}>
+              <Tr key={`${Math.floor(Math.random() * 100)}-${item.nombre}`}>
                 <Td width="93px" padding={'7px 20px 10px 20px'} key={item.nombre}>
                   {item.nombre}
                 </Td>
@@ -33,7 +36,12 @@ export const BAUDisplayTable: React.FC<ComponentProps> = ({ tasa }) => {
                     ? new Decimal(grupo.tasa * 100).toFixed(2) + '%'
                     : 'N/A';
                   return (
-                    <Td width="74px" height="64px" padding={'7px 4px 10px 4px'} key={grupo.nombre}>
+                    <Td
+                      width="74px"
+                      height="64px"
+                      padding={'7px 4px 10px 4px'}
+                      key={`${Math.floor(Math.random() * 100)}-${grupo.nombre}`}
+                    >
                       <VStack spacing="0">
                         <span>{percentageValue}</span>
                         {grupo.target && (

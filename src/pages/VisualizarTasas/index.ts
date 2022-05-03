@@ -1,1 +1,1 @@
-export { VisualizarTasas as VisualizarTasasPage } from './VisualizarTasas';
+export { VisualizarTasasPage } from './VisualizarTasas.page';

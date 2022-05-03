@@ -1,5 +1,5 @@
 {
-  "name": "gestion_flotas",
+  "name": "gestion-flotas",
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
@@ -22,6 +22,7 @@
     "env-cmd": "^10.1.0",
     "framer-motion": "^6.2.8",
     "http-proxy-middleware": "^2.0.3",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.27.1",
@@ -32,11 +33,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start:tunnel": "set HTTPS=true&&cross-env REACT_APP_API_BASE_URL='https://625b11e950128c57020146e7.mockapi.io' react-scripts start",
-    "start": "set PORT=4000&&cross-env REACT_APP_API_BASE_URL='http://localhost:8080' react-scripts start",
+    "start:tunnel": "set PORT=3000&&cross-env REACT_APP_API_BASE_URL='http://localhost:1337' react-scripts start",
+    "start": "set PORT=4200&&cross-env REACT_APP_API_BASE_URL='http://localhost:8080' react-scripts start",
     "start:ssl": "set HTTPS=true&&react-scripts start",
     "build:local": "react-scripts build",
-    "build": "cross-env REACT_APP_API_BASE_URL='https://625b11e950128c57020146e7.mockapi.io' react-scripts build",
+    "build": "cross-env REACT_APP_API_BASE_URL='https://strapi-gestion-flotas.herokuapp.com' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
